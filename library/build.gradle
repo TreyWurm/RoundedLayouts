@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.github.dcendents.android-maven'
 
-group='com.github.TreyWurm'
+group = 'com.github.TreyWurm'
 
 android {
     compileSdkVersion 29
@@ -24,6 +24,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        kotlinOptions.freeCompilerArgs += ['-module-name', "com.github.TreyWurm.RoundedLayouts"]
+    }
 }
 
 dependencies {
@@ -33,5 +37,5 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'com.google.android.material:material:1.2.1'
-    api 'com.github.TreyWurm:ColorUtils:1.0.2'
+    api 'com.github.TreyWurm:ColorUtils:1.0.3'
 }
