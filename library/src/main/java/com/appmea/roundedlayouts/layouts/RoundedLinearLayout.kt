@@ -8,7 +8,10 @@ import android.util.AttributeSet
 import android.view.ViewOutlineProvider
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
-import com.appmea.roundedlayouts.*
+import com.appmea.colorutils.MaterialColorUtils
+import com.appmea.roundedlayouts.LayoutVersionImplementation
+import com.appmea.roundedlayouts.R
+import com.appmea.roundedlayouts.RoundedLayout
 import com.appmea.roundedlayouts.RoundedLayout.Companion.DEFAULT_BACKGROUND_COLOR
 import com.appmea.roundedlayouts.RoundedLayout.Companion.DEFAULT_RADIUS
 import com.appmea.roundedlayouts.RoundedLayout.Companion.DEFAULT_STROKE_COLOR
@@ -35,7 +38,7 @@ class RoundedLinearLayout @JvmOverloads constructor(
     private var strokeWidthDouble = DEFAULT_STROKE_WIDTH * 2f
     private var strokeColor = DEFAULT_STROKE_COLOR
     private var rclBackgroundColor = DEFAULT_BACKGROUND_COLOR
-    private val colorUtils: ColorUtils = ColorUtils(context)
+    private val colorUtils: MaterialColorUtils = MaterialColorUtils(context)
 
     private var cornerRadius = DEFAULT_RADIUS
 
@@ -80,7 +83,7 @@ class RoundedLinearLayout @JvmOverloads constructor(
             } else {
                 array.getColor(
                     R.styleable.RoundedLinearLayout_rl_background_color,
-                    colorUtils.colorSurface
+                    colorUtils.getColorSurface()
                 )
             }
             array.recycle()
@@ -191,7 +194,5 @@ class RoundedLinearLayout @JvmOverloads constructor(
         override fun initBackground() {
             setPadding(strokeWidth, strokeWidth, strokeWidth, strokeWidth)
         }
-
-
     }
 }

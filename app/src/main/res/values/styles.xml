@@ -5,8 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorRippleSurface">#1f000000</item>
-        <item name="colorSurface">#fff</item>
+        <item name="colorSurface">#673AB7</item>
     </style>
 
 </resources>
