@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="RoundedLayout">
+        <attr name="rl_radius" format="dimension" />
+        <attr name="rl_stroke_width" format="dimension" />
+        <attr name="rl_stroke_color" format="color|reference" />
+        <attr name="rl_background_color" format="color|reference" />
+    </declare-styleable>
+
     <declare-styleable name="RoundedConstraintLayout">
-        <attr name="rcl_radius" format="dimension" />
-        <attr name="rcl_stroke_width" format="dimension" />
-        <attr name="rcl_stroke_color" format="color|reference" />
-        <attr name="rcl_background_color" format="color|reference" />
+        <attr name="rl_radius" />
+        <attr name="rl_stroke_width" />
+        <attr name="rl_stroke_color" />
+        <attr name="rl_background_color" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundedLinearLayout" >
+        <attr name="rl_radius" />
+        <attr name="rl_stroke_width" />
+        <attr name="rl_stroke_color" />
+        <attr name="rl_background_color" />
     </declare-styleable>
 </resources>
