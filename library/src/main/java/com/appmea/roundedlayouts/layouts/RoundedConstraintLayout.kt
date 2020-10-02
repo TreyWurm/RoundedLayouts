@@ -17,32 +17,35 @@ import com.appmea.roundedlayouts.RoundedLayout.Companion.DEFAULT_RADIUS
 import com.appmea.roundedlayouts.RoundedLayout.Companion.DEFAULT_STROKE_COLOR
 import com.appmea.roundedlayouts.RoundedLayout.Companion.DEFAULT_STROKE_WIDTH
 
-class RoundedConstraintLayout @JvmOverloads constructor(
+open class RoundedConstraintLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
-) : ConstraintLayout(context, attrs, defStyle) , RoundedLayout{
-
-    private val pathStroke = Path()
-    private val paintStroke: Paint
-    private val paintBackground: Paint
+) : ConstraintLayout(context, attrs, defStyle), RoundedLayout {
 
     /**
      * With of border stroke
      */
-    private var strokeWidth = DEFAULT_STROKE_WIDTH
+    var strokeWidth: Int = DEFAULT_STROKE_WIDTH
+        set(value) {
+            strokeWidthDouble = value * 2f
+            field = value
+        }
+
+    var cornerRadius = DEFAULT_RADIUS
+    var strokeColor = DEFAULT_STROKE_COLOR
+    var rlBackgroundColor = DEFAULT_BACKGROUND_COLOR
+
 
     /**
      * Double the width of the border stroke, as drawing a path is using thickness/half as actual path middle
      */
     private var strokeWidthDouble = DEFAULT_STROKE_WIDTH * 2f
-    private var strokeColor = DEFAULT_STROKE_COLOR
-    private var rlBackgroundColor = DEFAULT_BACKGROUND_COLOR
     private val colorUtils: MaterialColorUtils = MaterialColorUtils(context)
-
-    private var cornerRadius = DEFAULT_RADIUS
-
     private val layoutVersionImplementation: LayoutVersionImplementation
+    private val pathStroke = Path()
+    private val paintStroke = Paint()
+    private val paintBackground = Paint()
 
 
     init {
@@ -90,20 +93,19 @@ class RoundedConstraintLayout @JvmOverloads constructor(
         }
 
 
-        paintBackground = Paint().apply {
+        paintBackground.apply {
             flags = Paint.ANTI_ALIAS_FLAG
             style = Paint.Style.FILL
             color = rlBackgroundColor
             strokeWidth = strokeWidthDouble
         }
 
-        paintStroke = Paint().apply {
+        paintStroke.apply {
             flags = Paint.ANTI_ALIAS_FLAG
             style = Paint.Style.STROKE
             color = strokeColor
             strokeWidth = strokeWidthDouble
         }
-
 
 
         layoutVersionImplementation.initBackground()

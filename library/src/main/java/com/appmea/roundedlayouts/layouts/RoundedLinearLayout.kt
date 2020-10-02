@@ -17,32 +17,35 @@ import com.appmea.roundedlayouts.RoundedLayout.Companion.DEFAULT_RADIUS
 import com.appmea.roundedlayouts.RoundedLayout.Companion.DEFAULT_STROKE_COLOR
 import com.appmea.roundedlayouts.RoundedLayout.Companion.DEFAULT_STROKE_WIDTH
 
-class RoundedLinearLayout @JvmOverloads constructor(
+open class RoundedLinearLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
 ) : LinearLayout(context, attrs, defStyle), RoundedLayout {
 
-    private val pathStroke = Path()
-    private val paintStroke = Paint()
-    private val paintBackground = Paint()
-
     /**
      * With of border stroke
      */
-    private var strokeWidth = DEFAULT_STROKE_WIDTH
+    var strokeWidth: Int = DEFAULT_STROKE_WIDTH
+        set(value) {
+            strokeWidthDouble = value * 2f
+            field = value
+        }
+
+    var strokeColor = DEFAULT_STROKE_COLOR
+    var rclBackgroundColor = DEFAULT_BACKGROUND_COLOR
+    var cornerRadius = DEFAULT_RADIUS
+
 
     /**
      * Double the width of the border stroke, as drawing a path is using thickness/half as actual path middle
      */
     private var strokeWidthDouble = DEFAULT_STROKE_WIDTH * 2f
-    private var strokeColor = DEFAULT_STROKE_COLOR
-    private var rclBackgroundColor = DEFAULT_BACKGROUND_COLOR
     private val colorUtils: MaterialColorUtils = MaterialColorUtils(context)
-
-    private var cornerRadius = DEFAULT_RADIUS
-
     private val layoutVersionImplementation: LayoutVersionImplementation
+    private val pathStroke = Path()
+    private val paintStroke = Paint()
+    private val paintBackground = Paint()
 
 
     init {
@@ -103,7 +106,6 @@ class RoundedLinearLayout @JvmOverloads constructor(
             color = strokeColor
             strokeWidth = strokeWidthDouble
         }
-
 
 
         layoutVersionImplementation.initBackground()
