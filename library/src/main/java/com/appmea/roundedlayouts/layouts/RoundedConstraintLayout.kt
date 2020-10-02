@@ -29,10 +29,19 @@ open class RoundedConstraintLayout @JvmOverloads constructor(
     var strokeWidth: Int = DEFAULT_STROKE_WIDTH
         set(value) {
             strokeWidthDouble = value * 2f
+            paintStroke.strokeWidth = value.toFloat()
             field = value
+//            setPadding(strokeWidth, strokeWidth, strokeWidth, strokeWidth)
+            requestLayout()
         }
 
     var cornerRadius = DEFAULT_RADIUS
+        set(value) {
+            field = value
+            layoutVersionImplementation.initBackground()
+            requestLayout()
+        }
+
     var strokeColor = DEFAULT_STROKE_COLOR
     var rlBackgroundColor = DEFAULT_BACKGROUND_COLOR
 

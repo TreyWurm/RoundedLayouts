@@ -35,6 +35,10 @@ open class RoundedLinearLayout @JvmOverloads constructor(
     var strokeColor = DEFAULT_STROKE_COLOR
     var rclBackgroundColor = DEFAULT_BACKGROUND_COLOR
     var cornerRadius = DEFAULT_RADIUS
+        set(value) {
+            field = value
+            requestLayout()
+        }
 
 
     /**
@@ -134,15 +138,16 @@ open class RoundedLinearLayout @JvmOverloads constructor(
     inner class PostLollipop : LayoutVersionImplementation {
         override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
             pathStroke.reset()
-            pathStroke.addRoundRect(
-                0f,
-                0f,
-                width.toFloat(),
-                height.toFloat(),
-                cornerRadius.toFloat(),
-                cornerRadius.toFloat(),
-                Path.Direction.CW
-            )
+            pathStroke.addRect(0f,0f,width.toFloat(),height.toFloat(), Path.Direction.CW)
+//            pathStroke.addRoundRect(
+//                0f,
+//                0f,
+//                width.toFloat(),
+//                height.toFloat(),
+//                cornerRadius.toFloat(),
+//                cornerRadius.toFloat(),
+//                Path.Direction.CW
+//            )
         }
 
         override fun dispatchDraw(canvas: Canvas) {

@@ -9,20 +9,21 @@
 
 
     <com.appmea.roundedlayouts.layouts.RoundedConstraintLayout
+        android:id="@+id/rcl_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:id="@+id/rcl_container"
         android:elevation="10dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:rl_radius="16dp"
         app:rl_background_color="#afb"
-        app:rl_stroke_color="#FFEB3B">
+        app:rl_stroke_width="20dp"
+        app:rl_radius="16dp"
+        app:rl_stroke_color="#FF0000">
 
 
         <TextView
@@ -48,6 +49,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </com.appmea.roundedlayouts.layouts.RoundedConstraintLayout>
+
+    <SeekBar
+        android:id="@+id/sb_radius"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:max="100"
+        app:layout_constraintTop_toBottomOf="@id/rcl_container" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_items"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
