@@ -18,26 +18,29 @@ interface RoundedLayout {
         bottom: Float,
         rx: Float,
         ry: Float,
+        symmetricCorners: Boolean = true
     ): Path {
-        var rx = rx
-        var ry = ry
         val path = Path()
-        if (rx < 0) rx = 0f
-        if (ry < 0) ry = 0f
         val width = right - left
         val height = bottom - top
-        if (rx > width / 2) rx = width / 2
-        if (ry > height / 2) ry = height / 2
-        val widthMinusCorners = width - 2 * rx
-        val heightMinusCorners = height - 2 * ry
-        path.moveTo(right, top + ry)
-        path.rQuadTo(0f, -ry, -rx, -ry) //top-right corner
+
+        // Need to limit radii
+        val widthHalf = width / 2f
+        val heightHalf = height / 2f
+        val rxLimited = rx.coerceAtLeast(0f).coerceAtMost(if (symmetricCorners) minOf(widthHalf, heightHalf) else width / 2f)
+        val ryLimited = rx.coerceAtLeast(0f).coerceAtMost(if (symmetricCorners) minOf(widthHalf, heightHalf) else height / 2f)
+
+        val widthMinusCorners = width - 2 * rxLimited
+        val heightMinusCorners = height - 2 * ryLimited
+
+        path.moveTo(right, top + ryLimited)
+        path.rQuadTo(0f, -ryLimited, -rxLimited, -ryLimited) //top-right corner
         path.rLineTo(-widthMinusCorners, 0f)
-        path.rQuadTo(-rx, 0f, -rx, ry) //top-left corner
+        path.rQuadTo(-rxLimited, 0f, -rxLimited, ryLimited) //top-left corner
         path.rLineTo(0f, heightMinusCorners)
-        path.rQuadTo(0f, ry, rx, ry) //bottom-left corner
+        path.rQuadTo(0f, ryLimited, rxLimited, ryLimited) //bottom-left corner
         path.rLineTo(widthMinusCorners, 0f)
-        path.rQuadTo(rx, 0f, rx, -ry) //bottom-right corner
+        path.rQuadTo(rxLimited, 0f, rxLimited, -ryLimited) //bottom-right corner
         path.rLineTo(0f, -heightMinusCorners)
         path.close() //Given close, last lineto can be removed.
         return path

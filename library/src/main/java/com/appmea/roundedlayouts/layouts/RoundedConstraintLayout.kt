@@ -43,7 +43,18 @@ open class RoundedConstraintLayout @JvmOverloads constructor(
         }
 
     var strokeColor = DEFAULT_STROKE_COLOR
+        set(value) {
+            field = value
+            paintStroke.color = value
+            invalidate()
+        }
+
     var rlBackgroundColor = DEFAULT_BACKGROUND_COLOR
+        set(value) {
+            field = value
+            paintBackground.color = value
+            invalidate()
+        }
 
 
     /**

@@ -1,5 +1,6 @@
 package com.appmea.roundedlayouts.example
 
+import android.graphics.Color
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
@@ -28,8 +29,15 @@ class MainActivity : AppCompatActivity() {
         var seekbar = findViewById<SeekBar>(R.id.sb_radius)
         seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-//                rclContainer.cornerRadius = progress
-                rclContainer.strokeWidth = progress
+                println("PROGRESS $progress")
+                rclContainer.cornerRadius = progress
+//                val strokeColor = rclContainer.rlBackgroundColor
+//                val alpha = (0xFF and (strokeColor shr 24)) / 255f
+//                val red = (0xFF and (strokeColor shr 16)) / 255f
+//                val green = (0xFF and (strokeColor shr 8)) / 255f
+//                val blue = (0xFF and strokeColor) / 255f
+//
+//                rclContainer.rlBackgroundColor = Color.argb((alpha * 255f).toInt(), progress, (green * 255f).toInt(), (blue * 255f).toInt())
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -44,10 +52,10 @@ class MainActivity : AppCompatActivity() {
         val list = List(500) {
             SimpleItem(it.toString())
         }
-        var adapter: FlexibleAdapter<SimpleItem> = FlexibleAdapter(list)
-        recyclerView.addItemDecoration(MarginItemDecoration(48))
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
+//        var adapter: FlexibleAdapter<SimpleItem> = FlexibleAdapter(list)
+//        recyclerView.addItemDecoration(MarginItemDecoration(48))
+//        recyclerView.layoutManager = LinearLayoutManager(this)
+//        recyclerView.adapter = adapter
     }
 
     class MarginItemDecoration(private val spaceHeight: Int) : RecyclerView.ItemDecoration() {
