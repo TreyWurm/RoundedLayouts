@@ -1,8 +1,10 @@
 package com.appmea.roundedlayouts.layouts
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.*
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.RippleDrawable
 import android.os.Build
 import android.util.AttributeSet
 import android.view.ViewOutlineProvider
@@ -163,7 +165,8 @@ open class RoundedLinearLayout @JvmOverloads constructor(
             val shapeDrawable = GradientDrawable()
             shapeDrawable.cornerRadius = cornerRadius.toFloat()
             shapeDrawable.setColor(rclBackgroundColor)
-            background = shapeDrawable
+            val rippleDrawable = RippleDrawable(ColorStateList.valueOf(colorUtils.darken(rclBackgroundColor, 0.1f)), shapeDrawable, null)
+            background = rippleDrawable
             clipToOutline = true
         }
     }

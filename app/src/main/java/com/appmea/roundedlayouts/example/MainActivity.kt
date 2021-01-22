@@ -1,11 +1,9 @@
 package com.appmea.roundedlayouts.example
 
-import android.graphics.Color
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,19 +16,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var rclContainer = findViewById<RoundedConstraintLayout>(R.id.rcl_container)
-        rclContainer.cornerRadius = 0
+//        var rclContainer = findViewById<RoundedConstraintLayout>(R.id.rcl_container)
+//        rclContainer.cornerRadius = 0
+//
+//        findViewById<TextView>(R.id.tv_1).apply {
+//            setOnClickListener { }
+//            text = Build.VERSION.SDK_INT.toString()
+//        }
 
-        findViewById<TextView>(R.id.tv_1).apply {
-            setOnClickListener { }
-            text = Build.VERSION.SDK_INT.toString()
-        }
-
-        var seekbar = findViewById<SeekBar>(R.id.sb_radius)
-        seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                println("PROGRESS $progress")
-                rclContainer.cornerRadius = progress
+//        var seekbar = findViewById<SeekBar>(R.id.sb_radius)
+//        seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+//            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+//                println("PROGRESS $progress")
+//                rclContainer.cornerRadius = progress
 //                val strokeColor = rclContainer.rlBackgroundColor
 //                val alpha = (0xFF and (strokeColor shr 24)) / 255f
 //                val red = (0xFF and (strokeColor shr 16)) / 255f
@@ -38,24 +36,24 @@ class MainActivity : AppCompatActivity() {
 //                val blue = (0xFF and strokeColor) / 255f
 //
 //                rclContainer.rlBackgroundColor = Color.argb((alpha * 255f).toInt(), progress, (green * 255f).toInt(), (blue * 255f).toInt())
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            }
-        })
+//            }
+//
+//            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+//            }
+//
+//            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+//            }
+//        })
 
 
         var recyclerView = findViewById<RecyclerView>(R.id.rv_items)
         val list = List(500) {
             SimpleItem(it.toString())
         }
-//        var adapter: FlexibleAdapter<SimpleItem> = FlexibleAdapter(list)
-//        recyclerView.addItemDecoration(MarginItemDecoration(48))
-//        recyclerView.layoutManager = LinearLayoutManager(this)
-//        recyclerView.adapter = adapter
+        var adapter: FlexibleAdapter<SimpleItem> = FlexibleAdapter(list)
+        recyclerView.addItemDecoration(MarginItemDecoration(48))
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
     }
 
     class MarginItemDecoration(private val spaceHeight: Int) : RecyclerView.ItemDecoration() {
