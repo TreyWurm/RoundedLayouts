@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.github.dcendents.android-maven'
 
-group = 'com.github.TreyWurm'
+group = 'com.github.citiesapps'
 
 android {
     compileSdkVersion 29
@@ -26,7 +26,7 @@ android {
     }
 
     compileOptions {
-        kotlinOptions.freeCompilerArgs += ['-module-name', "com.github.TreyWurm.RoundedLayouts"]
+        kotlinOptions.freeCompilerArgs += ['-module-name', "com.github.citiesapps.RoundedLayouts"]
     }
 }
 
@@ -36,6 +36,6 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.3.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'com.google.android.material:material:1.2.1'
-    api 'com.github.TreyWurm:ColorUtils:1.0.6'
+    implementation 'com.google.android.material:material:1.3.0'
+    api 'com.github.citiesapps:ColorUtils:1.0.7'
 }
