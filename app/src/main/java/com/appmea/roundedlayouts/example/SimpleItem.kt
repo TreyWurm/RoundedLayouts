@@ -1,8 +1,10 @@
 package com.appmea.roundedlayouts.example
 
+import android.graphics.Color
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.appmea.roundedlayouts.RoundedLayout
 import com.appmea.roundedlayouts.layouts.RoundedConstraintLayout
 import com.appmea.roundedlayouts.layouts.RoundedLinearLayout
 import eu.davidea.flexibleadapter.FlexibleAdapter
@@ -33,7 +35,8 @@ class SimpleItem(private val text: String) : AbstractFlexibleItem<SimpleItem.Sim
         var tvText: TextView? = view?.findViewById(R.id.tv_text)
 
         init {
-            view?.findViewById<RoundedLinearLayout>(R.id.root)?.setOnClickListener {
+            view?.findViewById<RoundedConstraintLayout>(R.id.root)?.rippleColor = Color.RED
+            view?.findViewById<RoundedConstraintLayout>(R.id.root)?.setOnClickListener {
                 var a = 1
                 ++a
             }

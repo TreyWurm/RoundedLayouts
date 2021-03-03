@@ -26,32 +26,51 @@ open class RoundedLinearLayout @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyle), RoundedLayout {
 
     /**
-     * With of border stroke
+     * Double the width of the border stroke, as drawing a path is using thickness/half as actual path middle
      */
-    var strokeWidth: Int = DEFAULT_STROKE_WIDTH
+    private var strokeWidthDouble = DEFAULT_STROKE_WIDTH * 2f
+    private val layoutVersionImplementation: LayoutVersionImplementation
+    private val pathStroke = Path()
+    private val paintStroke = Paint()
+    private val paintBackground = Paint()
+    private val colorUtils: MaterialColorUtils = MaterialColorUtils(context)
+
+
+    final override var strokeWidth = DEFAULT_STROKE_WIDTH
         set(value) {
             strokeWidthDouble = value * 2f
             field = value
         }
 
-    var strokeColor = DEFAULT_STROKE_COLOR
-    var rclBackgroundColor = DEFAULT_BACKGROUND_COLOR
-    var cornerRadius = DEFAULT_RADIUS
+    final override var strokeColor = DEFAULT_STROKE_COLOR
         set(value) {
             field = value
+            paintStroke.color = value
+            layoutVersionImplementation.initBackground()
+            requestLayout()
+            invalidate()
+        }
+
+    final override var cornerRadius = DEFAULT_RADIUS
+        set(value) {
+            field = value
+            layoutVersionImplementation.initBackground()
             requestLayout()
         }
 
+    final override var rlBackgroundColor = DEFAULT_BACKGROUND_COLOR
+        set(value) {
+            field = value
+            paintBackground.color = value
+            invalidate()
+        }
 
-    /**
-     * Double the width of the border stroke, as drawing a path is using thickness/half as actual path middle
-     */
-    private var strokeWidthDouble = DEFAULT_STROKE_WIDTH * 2f
-    private val colorUtils: MaterialColorUtils = MaterialColorUtils(context)
-    private val layoutVersionImplementation: LayoutVersionImplementation
-    private val pathStroke = Path()
-    private val paintStroke = Paint()
-    private val paintBackground = Paint()
+    final override var rippleColor = colorUtils.darken(rlBackgroundColor, 0.2f)
+        set(value) {
+            field = value
+            layoutVersionImplementation.initBackground()
+            invalidate()
+        }
 
 
     init {
@@ -84,7 +103,7 @@ open class RoundedLinearLayout @JvmOverloads constructor(
                 )
             }
 
-            rclBackgroundColor = if (isInEditMode) {
+            rlBackgroundColor = if (isInEditMode) {
                 array.getColor(
                     R.styleable.RoundedLinearLayout_rl_background_color,
                     DEFAULT_BACKGROUND_COLOR
@@ -102,7 +121,7 @@ open class RoundedLinearLayout @JvmOverloads constructor(
         paintBackground.apply {
             flags = Paint.ANTI_ALIAS_FLAG
             style = Paint.Style.FILL
-            color = rclBackgroundColor
+            color = rlBackgroundColor
             strokeWidth = strokeWidthDouble
         }
 
@@ -140,7 +159,7 @@ open class RoundedLinearLayout @JvmOverloads constructor(
     inner class PostLollipop : LayoutVersionImplementation {
         override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
             pathStroke.reset()
-            pathStroke.addRect(0f,0f,width.toFloat(),height.toFloat(), Path.Direction.CW)
+            pathStroke.addRect(0f, 0f, width.toFloat(), height.toFloat(), Path.Direction.CW)
 //            pathStroke.addRoundRect(
 //                0f,
 //                0f,
@@ -164,8 +183,8 @@ open class RoundedLinearLayout @JvmOverloads constructor(
             outlineProvider = ViewOutlineProvider.BACKGROUND
             val shapeDrawable = GradientDrawable()
             shapeDrawable.cornerRadius = cornerRadius.toFloat()
-            shapeDrawable.setColor(rclBackgroundColor)
-            val rippleDrawable = RippleDrawable(ColorStateList.valueOf(colorUtils.darken(rclBackgroundColor, 0.1f)), shapeDrawable, null)
+            shapeDrawable.setColor(rlBackgroundColor)
+            val rippleDrawable = RippleDrawable(ColorStateList.valueOf(rippleColor), shapeDrawable, null)
             background = rippleDrawable
             clipToOutline = true
         }
@@ -190,6 +209,7 @@ open class RoundedLinearLayout @JvmOverloads constructor(
         }
 
         override fun dispatchDraw(canvas: Canvas) {
+            @Suppress("deprecation")
             val count = canvas.saveLayer(0f, 0f, width.toFloat(), height.toFloat(), null, Canvas.ALL_SAVE_FLAG)
             paintBackground.xfermode = null
             canvas.drawPath(pathStroke, paintBackground)

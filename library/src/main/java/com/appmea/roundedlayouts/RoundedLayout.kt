@@ -10,6 +10,11 @@ interface RoundedLayout {
         const val DEFAULT_BACKGROUND_COLOR = -0x1
     }
 
+    var strokeColor: Int
+    var strokeWidth: Int
+    var cornerRadius: Int
+    var rlBackgroundColor: Int
+    var rippleColor: Int
 
     fun createRoundedRect(
         left: Float,

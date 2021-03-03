@@ -26,48 +26,56 @@ open class RoundedConstraintLayout @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyle), RoundedLayout {
 
     /**
+     * Double the width of the border stroke, as drawing a path is using thickness/half as actual path middle
+     */
+    private var strokeWidthDouble = DEFAULT_STROKE_WIDTH * 2f
+    private val layoutVersionImplementation: LayoutVersionImplementation
+    private val pathStroke = Path()
+    private val paintStroke = Paint()
+    private val paintBackground = Paint()
+    private val colorUtils: MaterialColorUtils = MaterialColorUtils(context)
+
+    /**
      * With of border stroke
      */
-    var strokeWidth: Int = DEFAULT_STROKE_WIDTH
+    final override var strokeWidth: Int = DEFAULT_STROKE_WIDTH
         set(value) {
             strokeWidthDouble = value * 2f
             paintStroke.strokeWidth = value.toFloat()
             field = value
-//            setPadding(strokeWidth, strokeWidth, strokeWidth, strokeWidth)
-            requestLayout()
-        }
-
-    var cornerRadius = DEFAULT_RADIUS
-        set(value) {
-            field = value
+            setPadding(strokeWidth, strokeWidth, strokeWidth, strokeWidth)
             layoutVersionImplementation.initBackground()
             requestLayout()
+            invalidate()
         }
 
-    var strokeColor = DEFAULT_STROKE_COLOR
+    final override var strokeColor = DEFAULT_STROKE_COLOR
         set(value) {
             field = value
             paintStroke.color = value
             invalidate()
         }
 
-    var rlBackgroundColor = DEFAULT_BACKGROUND_COLOR
+    final override var cornerRadius = DEFAULT_RADIUS
+        set(value) {
+            field = value
+            layoutVersionImplementation.initBackground()
+            requestLayout()
+        }
+
+    final override var rlBackgroundColor = DEFAULT_BACKGROUND_COLOR
         set(value) {
             field = value
             paintBackground.color = value
             invalidate()
         }
 
-
-    /**
-     * Double the width of the border stroke, as drawing a path is using thickness/half as actual path middle
-     */
-    private var strokeWidthDouble = DEFAULT_STROKE_WIDTH * 2f
-    private val colorUtils: MaterialColorUtils = MaterialColorUtils(context)
-    private val layoutVersionImplementation: LayoutVersionImplementation
-    private val pathStroke = Path()
-    private val paintStroke = Paint()
-    private val paintBackground = Paint()
+    final override var rippleColor = colorUtils.darken(rlBackgroundColor, 0.2f)
+        set(value) {
+            field = value
+            layoutVersionImplementation.initBackground()
+            invalidate()
+        }
 
 
     init {
@@ -180,7 +188,7 @@ open class RoundedConstraintLayout @JvmOverloads constructor(
             val shapeDrawable = GradientDrawable()
             shapeDrawable.cornerRadius = cornerRadius.toFloat()
             shapeDrawable.setColor(rlBackgroundColor)
-            val rippleDrawable = RippleDrawable(ColorStateList.valueOf(colorUtils.darken(rlBackgroundColor, 0.1f)), shapeDrawable, null)
+            val rippleDrawable = RippleDrawable(ColorStateList.valueOf(rippleColor), shapeDrawable, null)
             background = rippleDrawable
             clipToOutline = true
         }
@@ -205,6 +213,7 @@ open class RoundedConstraintLayout @JvmOverloads constructor(
         }
 
         override fun dispatchDraw(canvas: Canvas) {
+            @Suppress("deprecation")
             val count = canvas.saveLayer(0f, 0f, width.toFloat(), height.toFloat(), null, Canvas.ALL_SAVE_FLAG)
             paintBackground.xfermode = null
             canvas.drawPath(pathStroke, paintBackground)
