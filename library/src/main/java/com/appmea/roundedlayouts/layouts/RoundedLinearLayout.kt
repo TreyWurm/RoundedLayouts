@@ -51,7 +51,13 @@ open class RoundedLinearLayout @JvmOverloads constructor(
             invalidate()
         }
 
-    final override var cornerRadius = DEFAULT_RADIUS
+    final override var cornerRadius: Int = DEFAULT_RADIUS
+        set(value) {
+            field = value
+            cornerRadii = IntArray(8) { value }
+        }
+
+    final override var cornerRadii: IntArray = IntArray(8) { DEFAULT_RADIUS }
         set(value) {
             field = value
             layoutVersionImplementation.initBackground()
@@ -82,12 +88,41 @@ open class RoundedLinearLayout @JvmOverloads constructor(
 
         if (attrs != null) {
             val array = context.obtainStyledAttributes(attrs, R.styleable.RoundedLinearLayout)
-            if (array.hasValue(R.styleable.RoundedLinearLayout_rl_radius)) {
+            if (array.hasValue(R.styleable.RoundedConstraintLayout_rl_radius)) {
                 cornerRadius = array.getDimensionPixelSize(
-                    R.styleable.RoundedLinearLayout_rl_radius,
+                    R.styleable.RoundedConstraintLayout_rl_radius,
                     DEFAULT_RADIUS
                 )
             }
+
+            if (array.hasValue(R.styleable.RoundedConstraintLayout_rl_radius_top_left)
+                || array.hasValue(R.styleable.RoundedConstraintLayout_rl_radius_top_right)
+                || array.hasValue(R.styleable.RoundedConstraintLayout_rl_radius_bottom_left)
+                || array.hasValue(R.styleable.RoundedConstraintLayout_rl_radius_bottom_right)
+            ) {
+
+                val topLeft = array.getDimensionPixelSize(
+                    R.styleable.RoundedConstraintLayout_rl_radius_top_left,
+                    DEFAULT_RADIUS
+                )
+                val topRight = array.getDimensionPixelSize(
+                    R.styleable.RoundedConstraintLayout_rl_radius_top_right,
+                    DEFAULT_RADIUS
+                )
+
+                val bottomLeft = array.getDimensionPixelSize(
+                    R.styleable.RoundedConstraintLayout_rl_radius_bottom_left,
+                    DEFAULT_RADIUS
+                )
+
+                val bottomRight = array.getDimensionPixelSize(
+                    R.styleable.RoundedConstraintLayout_rl_radius_bottom_right,
+                    DEFAULT_RADIUS
+                )
+
+                cornerRadii = intArrayOf(topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft)
+            }
+
 
             if (array.hasValue(R.styleable.RoundedLinearLayout_rl_stroke_width)) {
                 strokeWidth = array.getDimensionPixelSize(
@@ -159,16 +194,14 @@ open class RoundedLinearLayout @JvmOverloads constructor(
     inner class PostLollipop : LayoutVersionImplementation {
         override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
             pathStroke.reset()
-            pathStroke.addRect(0f, 0f, width.toFloat(), height.toFloat(), Path.Direction.CW)
-//            pathStroke.addRoundRect(
-//                0f,
-//                0f,
-//                width.toFloat(),
-//                height.toFloat(),
-//                cornerRadius.toFloat(),
-//                cornerRadius.toFloat(),
-//                Path.Direction.CW
-//            )
+            pathStroke.addRoundRect(
+                0f,
+                0f,
+                width.toFloat(),
+                height.toFloat(),
+                cornerRadii.toFloatArray(),
+                Path.Direction.CW
+            )
         }
 
         override fun dispatchDraw(canvas: Canvas) {
@@ -182,7 +215,7 @@ open class RoundedLinearLayout @JvmOverloads constructor(
             setPadding(strokeWidth, strokeWidth, strokeWidth, strokeWidth)
             outlineProvider = ViewOutlineProvider.BACKGROUND
             val shapeDrawable = GradientDrawable()
-            shapeDrawable.cornerRadius = cornerRadius.toFloat()
+            shapeDrawable.cornerRadii = cornerRadii.toFloatArray()
             shapeDrawable.setColor(rlBackgroundColor)
             val rippleDrawable = RippleDrawable(ColorStateList.valueOf(rippleColor), shapeDrawable, null)
             background = rippleDrawable
@@ -202,8 +235,7 @@ open class RoundedLinearLayout @JvmOverloads constructor(
                     strokeWidth.toFloat(),
                     width.toFloat() - strokeWidth.toFloat(),
                     height.toFloat() - strokeWidth.toFloat(),
-                    cornerRadius.toFloat(),
-                    cornerRadius.toFloat()
+                    cornerRadii.toFloatArray()
                 )
             )
         }

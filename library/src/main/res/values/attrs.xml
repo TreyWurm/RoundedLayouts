@@ -1,21 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="RoundedLayout">
+        <!-- Use for all corners same radius -->
         <attr name="rl_radius" format="dimension" />
+        <!-- Use corners have different radii -->
+        <attr name="rl_radius_top_left" format="dimension" />
+        <attr name="rl_radius_top_right" format="dimension" />
+        <attr name="rl_radius_bottom_left" format="dimension" />
+        <attr name="rl_radius_bottom_right" format="dimension" />
         <attr name="rl_stroke_width" format="dimension" />
         <attr name="rl_stroke_color" format="color|reference" />
         <attr name="rl_background_color" format="color|reference" />
     </declare-styleable>
 
     <declare-styleable name="RoundedConstraintLayout">
+        <!-- Use for all corners same radius -->
         <attr name="rl_radius" />
+        <!-- Use corners have different radii -->
+        <attr name="rl_radius_top_left" />
+        <attr name="rl_radius_top_right" />
+        <attr name="rl_radius_bottom_left" />
+        <attr name="rl_radius_bottom_right" />
         <attr name="rl_stroke_width" />
         <attr name="rl_stroke_color" />
         <attr name="rl_background_color" />
     </declare-styleable>
 
-    <declare-styleable name="RoundedLinearLayout" >
+    <declare-styleable name="RoundedLinearLayout">
+        <!-- Use for all corners same radius -->
         <attr name="rl_radius" />
+        <!-- Use corners have different radii -->
+        <attr name="rl_radius_top_left" />
+        <attr name="rl_radius_top_right" />
+        <attr name="rl_radius_bottom_left" />
+        <attr name="rl_radius_bottom_right" />
         <attr name="rl_stroke_width" />
         <attr name="rl_stroke_color" />
         <attr name="rl_background_color" />

@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val singleItem = true
+        val singleItem = false
         binding.rclContainer.visibility = if (singleItem) View.VISIBLE else View.GONE
         binding.sbSeekbar.visibility = if (singleItem) View.VISIBLE else View.GONE
         binding.rvItems.visibility = if (singleItem) View.GONE else View.VISIBLE
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         // ================================================================================================================================================================
         // Single item
         // ================================================================================================================================================================
-        binding.rclContainer.cornerRadius = 0
+        binding.rclContainer.cornerRadii = intArrayOf(48,48,0,0,48,48,0,0)
         binding.rclContainer.rlBackgroundColor = Color.WHITE
         binding.rclContainer.setOnClickListener { }
 

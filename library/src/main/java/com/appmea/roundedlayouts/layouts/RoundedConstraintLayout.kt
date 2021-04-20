@@ -56,7 +56,13 @@ open class RoundedConstraintLayout @JvmOverloads constructor(
             invalidate()
         }
 
-    final override var cornerRadius = DEFAULT_RADIUS
+    final override var cornerRadius: Int = DEFAULT_RADIUS
+        set(value) {
+            field = value
+            cornerRadii = IntArray(8) { value }
+        }
+
+    final override var cornerRadii: IntArray = IntArray(8) { DEFAULT_RADIUS }
         set(value) {
             field = value
             layoutVersionImplementation.initBackground()
@@ -92,6 +98,34 @@ open class RoundedConstraintLayout @JvmOverloads constructor(
                     R.styleable.RoundedConstraintLayout_rl_radius,
                     DEFAULT_RADIUS
                 )
+            }
+
+            if (array.hasValue(R.styleable.RoundedConstraintLayout_rl_radius_top_left)
+                || array.hasValue(R.styleable.RoundedConstraintLayout_rl_radius_top_right)
+                || array.hasValue(R.styleable.RoundedConstraintLayout_rl_radius_bottom_left)
+                || array.hasValue(R.styleable.RoundedConstraintLayout_rl_radius_bottom_right)
+            ) {
+
+                val topLeft = array.getDimensionPixelSize(
+                    R.styleable.RoundedConstraintLayout_rl_radius_top_left,
+                    DEFAULT_RADIUS
+                )
+                val topRight = array.getDimensionPixelSize(
+                    R.styleable.RoundedConstraintLayout_rl_radius_top_right,
+                    DEFAULT_RADIUS
+                )
+
+                val bottomLeft = array.getDimensionPixelSize(
+                    R.styleable.RoundedConstraintLayout_rl_radius_bottom_left,
+                    DEFAULT_RADIUS
+                )
+
+                val bottomRight = array.getDimensionPixelSize(
+                    R.styleable.RoundedConstraintLayout_rl_radius_bottom_right,
+                    DEFAULT_RADIUS
+                )
+
+                cornerRadii = intArrayOf(topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft)
             }
 
             if (array.hasValue(R.styleable.RoundedConstraintLayout_rl_stroke_width)) {
@@ -169,8 +203,7 @@ open class RoundedConstraintLayout @JvmOverloads constructor(
                 0f,
                 width.toFloat(),
                 height.toFloat(),
-                cornerRadius.toFloat(),
-                cornerRadius.toFloat(),
+                cornerRadii.toFloatArray(),
                 Path.Direction.CW
             )
         }
@@ -186,7 +219,7 @@ open class RoundedConstraintLayout @JvmOverloads constructor(
             setPadding(strokeWidth, strokeWidth, strokeWidth, strokeWidth)
             outlineProvider = ViewOutlineProvider.BACKGROUND
             val shapeDrawable = GradientDrawable()
-            shapeDrawable.cornerRadius = cornerRadius.toFloat()
+            shapeDrawable.cornerRadii = cornerRadii.toFloatArray()
             shapeDrawable.setColor(rlBackgroundColor)
             val rippleDrawable = RippleDrawable(ColorStateList.valueOf(rippleColor), shapeDrawable, null)
             background = rippleDrawable
@@ -206,8 +239,7 @@ open class RoundedConstraintLayout @JvmOverloads constructor(
                     strokeWidth.toFloat(),
                     width.toFloat() - strokeWidth.toFloat(),
                     height.toFloat() - strokeWidth.toFloat(),
-                    cornerRadius.toFloat(),
-                    cornerRadius.toFloat()
+                    cornerRadii.toFloatArray()
                 )
             )
         }

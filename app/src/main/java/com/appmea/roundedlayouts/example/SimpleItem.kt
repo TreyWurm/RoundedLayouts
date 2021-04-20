@@ -35,8 +35,8 @@ class SimpleItem(private val text: String) : AbstractFlexibleItem<SimpleItem.Sim
         var tvText: TextView? = view?.findViewById(R.id.tv_text)
 
         init {
-            view?.findViewById<RoundedConstraintLayout>(R.id.root)?.rippleColor = Color.RED
-            view?.findViewById<RoundedConstraintLayout>(R.id.root)?.setOnClickListener {
+            view?.findViewById<RoundedLinearLayout>(R.id.root)?.rippleColor = Color.RED
+            view?.findViewById<RoundedLinearLayout>(R.id.root)?.setOnClickListener {
                 var a = 1
                 ++a
             }
